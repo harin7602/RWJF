@@ -94,7 +94,7 @@ At the heart of the Sentiyo search layer is a modular **Agentic AI Execution Mod
 - **Compliance**: Easier enforcement of data governance rules via the Access Agent.
 
 **Figure 5.1 – Agentic AI Search Flow**  
-![Agentic AI Flow](Images/functional_architecture.png)
+![Agentic AI Flow](Images/Agentic_AI_Flow.png)
 
 ---
 
