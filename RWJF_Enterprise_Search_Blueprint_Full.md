@@ -71,7 +71,7 @@ The architecture is deliberately layered. Users interact solely with Sentiyo’s
 - Immutable audit logs retained for seven years, meeting IRS and GDPR obligations  
 
 **Figure 6.1 – Security & Compliance Layers**  
-![Security Layers](Security_Layers.png)
+![Security Layers](Images/SecurityGovernance.png)
 
 ---
 
