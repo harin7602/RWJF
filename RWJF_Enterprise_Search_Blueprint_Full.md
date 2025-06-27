@@ -1,7 +1,7 @@
 
 # AI-Driven Enterprise Search Blueprint – Robert Wood Johnson Foundation
 
-**Version 1.2 – Narrative Edition**  
+**Version 1.3 – Narrative Edition**  
 **Date:** 27 June 2025  
 **Author:** Harindha Fernando – Enterprise Architect, NCINGA
 
@@ -21,7 +21,36 @@ In discussions with RWJF leadership, two design paths — Salesforce‑centric a
 
 ---
 
-## 2. Business Drivers & Success Criteria – Why This Matters to RWJF
+## 2. Existing Architecture and Challenges
+
+RWJF's current enterprise search solution is built on Raytion connectors integrated with Oracle databases, Adobe Experience Manager (AEM), Microsoft SharePoint, and internal content repositories such as rwjf.org. This system has been in place for several years and has served as the core enterprise knowledge access mechanism for internal staff.
+
+**Figure 2.1 – Technology Architecture**  
+![Existing Architecture](Images/Technology_Architecture.png)
+
+### 2.1 Technologies in Use
+- **Oracle PIMS DB** – Primary structured data source for grants and program data.
+- **Adobe AEM** – Hosts foundation publications, policy documents, and reports.
+- **SharePoint Online and Microsoft 365** – Used widely for internal collaboration and documentation.
+- **Drupal CMS** – Manages portions of the rwjf.org site for public content.
+- **Raytion Connectors** – Facilitate search federation across these sources.
+
+### 2.2 Technical Limitations and Risks
+- **Vendor Discontinuation**: Raytion has been acquired, and support for the existing connector stack is being deprecated, creating high risk of future downtime or patch gaps.
+- **Data Silos**: Content is indexed individually from each source, without unified semantic metadata or governance enforcement.
+- **No Interoperability with Salesforce**: As RWJF adopts Salesforce Nonprofit Cloud and Data Cloud, the current system has no native compatibility with these platforms.
+- **Limited AI Capabilities**: The current search lacks semantic awareness, natural language support, and contextual understanding.
+- **Compliance Gaps**: GDPR and PII controls are fragmented, with no centralized policy enforcement layer.
+
+### 2.3 Business Impact
+- **User Frustration**: Inconsistent or irrelevant results reduce productivity.
+- **Support Overhead**: Legacy connectors require manual intervention and frequent troubleshooting.
+- **High TCO**: Licensing and maintenance costs for Raytion and Oracle-based architecture are significant.
+- **Innovation Barrier**: Lack of AI extensibility hinders future innovation in analytics, decision support, and generative insights.
+
+---
+
+## 3. Business Drivers & Success Criteria – Why This Matters to RWJF
 
 - **Mission alignment:** Faster insight loops directly advance RWJF’s public‑health mission.
 - **Operational efficiency:** Target a 70 % reduction in time‑to‑information by unifying search.
@@ -30,7 +59,7 @@ In discussions with RWJF leadership, two design paths — Salesforce‑centric a
 
 ---
 
-## 3. Architectural Principles – How We Keep the Solution Durable
+## 4. Architectural Principles – How We Keep the Solution Durable
 
 1. **Governance‑First** – access checked before data leaves its source.  
 2. **Virtualise, Don’t Migrate** – move data only when analytics demands it.  
@@ -40,16 +69,16 @@ In discussions with RWJF leadership, two design paths — Salesforce‑centric a
 
 ---
 
-## 4. Reference Architecture – What We Are Building and Why
+## 5. Reference Architecture – What We Are Building and Why
 
 The architecture is deliberately layered. Users interact solely with Sentiyo’s conversational interface. Sentiyo interprets intent, retrieves governed structured data via Denodo and secure document snippets via UIB, then composes answers backed by Databricks vector search. This separation maximises agility and simplifies policy enforcement.
 
-**Figure 4.1 – Technology Architecture**  
+**Figure 5.1 – Technology Architecture**  
 ![Technology Architecture](Images/Technology_Architecture.png)
 
 ---
 
-## 5. User Journey Flow
+## 6. User Journey Flow
 
 The user journey begins with a natural language query — for example, “Show me all grants awarded to education programs in New Jersey in the last 5 years.” This query, whether entered via the Sentiyo interface or federated via intranet/SharePoint, is authenticated through Azure AD and routed to the intelligent orchestration layer.
 
@@ -67,7 +96,7 @@ The following subsections expand on the intelligent orchestration and architectu
 
 ---
 
-## 5.1 Agentic AI Execution Model – Modular Intelligence in Action
+## 6.1 Agentic AI Execution Model – Modular Intelligence in Action
 
 At the heart of the Sentiyo search layer is a modular **Agentic AI Execution Model**. Instead of monolithic AI models, the platform delegates responsibilities across autonomous, cooperating agents. This provides auditability, explainability, and the ability to evolve components independently.
 
@@ -93,12 +122,12 @@ At the heart of the Sentiyo search layer is a modular **Agentic AI Execution Mod
 - **Upgradability**: Each agent can evolve independently (e.g., plugging in GPT-5.5 instead of GPT-4-turbo).
 - **Compliance**: Easier enforcement of data governance rules via the Access Agent.
 
-**Figure 5.1 – Agentic AI Search Flow**  
+**Figure 6.1 – Agentic AI Search Flow**  
 ![Agentic AI Flow](Images/Agentic_AI_Flow.png)
 
 ---
 
-## 5.2 Functional Layers – Responsibilities Over Vendors
+## 6.2 Functional Layers – Responsibilities Over Vendors
 
 This architecture separates concerns cleanly across logical layers, ensuring each function is modular, testable, and replaceable. Below is a vendor-agnostic breakdown of the system’s responsibilities:
 
@@ -123,23 +152,23 @@ This architecture separates concerns cleanly across logical layers, ensuring eac
 - **Presentation Layer**  
   Sentiyo returns the final response to the user, with inline citations, and optionally enables hand-off to Power BI for deep analytics.
 
-**Figure 5.2 – Functional Layers (Vendor-Agnostic)**  
+**Figure 6.2 – Functional Layers (Vendor-Agnostic)**  
 ![Functional Layers](Images/functional_architecture.png)
 
 ---
 
-## 6. Security & Compliance – Trust by Architecture, Not Afterthought
+## 7. Security & Compliance – Trust by Architecture, Not Afterthought
 
 - PII classification via Azure Purview propagates automatically to Denodo and UIB  
 - TLS 1.3 end-to-end; zero-trust network segmentation between micro-services  
 - Immutable audit logs retained for seven years, meeting IRS and GDPR obligations  
 
-**Figure 6.1 – Security & Compliance Layers**  
+**Figure 7.1 – Security & Compliance Layers**  
 ![Security Layers](Images/SecurityGovernance.png)
 
 ---
 
-## 7. Deployment & Onboarding – How New Systems Join the Platform
+## 8. Deployment & Onboarding – How New Systems Join the Platform
 
 1. Profile & classify – data stewards tag sensitivity and ownership  
 2. Govern – RBAC and masking rules created once in Denodo or UIB  
@@ -147,18 +176,18 @@ This architecture separates concerns cleanly across logical layers, ensuring eac
 4. Index – Sentiyo embeds metadata and snippets  
 5. Validate – Pilot queries confirm relevance and redaction before go-live  
 
-**Figure 7.1 – Onboarding Flow**  
+**Figure 8.1 – Onboarding Flow**  
 ![Onboarding](Images/On-Boarding_Pipeline.png)
 
 ---
 
-## 8. Operational Excellence – Keeping the Lights On, Securely
+## 9. Operational Excellence – Keeping the Lights On, Securely
 
 CI/CD pipelines deploy all components via blue/green containers. Logs, traces and metrics stream into Azure Monitor; Sentinel automations raise alerts. Quarterly chaos drills validate fail-closed security behaviour.
 
 ---
 
-## 9. Cost Optimisation & ROI – Structured Next Step
+## 10. Cost Optimisation & ROI – Structured Next Step
 
 Rather than applying speculative ROI figures, we propose forming a joint RWJF–NCINGA working group to collect:
 - Legacy platform spend (Oracle, Raytion, bespoke connectors)  
@@ -173,7 +202,7 @@ The true value of the transformation lies not only in cost savings but in enabli
 
 ---
 
-## 10. Road-map & Phased Delivery – Risk-Managed Transformation
+## 11. Road-map & Phased Delivery – Risk-Managed Transformation
 
 - Phase 0 – Mobilise (2 weeks): charter, RACI, landing zone  
 - Phase 1 – Foundation (6 weeks): Denodo platform, UIB hardening, SSO integration  
