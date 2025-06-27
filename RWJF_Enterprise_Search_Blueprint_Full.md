@@ -60,7 +60,7 @@ The architecture is deliberately layered. Users interact solely with Sentiyo’s
 7. Act – Users drill into Power BI dashboards or share insights in Teams  
 
 **Figure 5.1 – User Journey Diagram**  
-![User Journey](User_Journey_Flow.png)
+![User Journey](Images/user-journey.png)
 
 ---
 
