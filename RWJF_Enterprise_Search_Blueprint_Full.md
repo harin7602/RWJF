@@ -124,7 +124,7 @@ This architecture separates concerns cleanly across logical layers, ensuring eac
   Sentiyo returns the final response to the user, with inline citations, and optionally enables hand-off to Power BI for deep analytics.
 
 **Figure 5.2 – Functional Layers (Vendor-Agnostic)**  
-![Functional Layers](Functional_Architecture.png)
+![Functional Layers](Images/functional_architecture.png)
 
 ---
 
