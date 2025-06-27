@@ -1,7 +1,7 @@
 
 # AI-Driven Enterprise Search Blueprint – Robert Wood Johnson Foundation
 
-**Version 1.3 – Narrative Edition**  
+**Version 1.4 – Narrative Edition**  
 **Date:** 27 June 2025  
 **Author:** Harindha Fernando – Enterprise Architect, NCINGA
 
@@ -159,9 +159,30 @@ This architecture separates concerns cleanly across logical layers, ensuring eac
 
 ## 7. Security & Compliance – Trust by Architecture, Not Afterthought
 
-- PII classification via Azure Purview propagates automatically to Denodo and UIB  
-- TLS 1.3 end-to-end; zero-trust network segmentation between micro-services  
-- Immutable audit logs retained for seven years, meeting IRS and GDPR obligations  
+Security in this solution is embedded from design through operations. Rather than bolted on post-facto, security controls are composed into each layer — from data classification to access policy, observability, and automated response.
+
+- **Data Classification**  
+  Azure Purview automatically tags sensitive fields (e.g., PII, grant recipient info), which Denodo and UIB enforce at runtime via masking, row-level security, and audit tagging.
+
+- **Access & Encryption**  
+  TLS 1.3 is enforced end-to-end across microservices. All access is governed by role-based policies, backed by Azure AD. UIB inspects every request for token validity and policy compliance.
+
+- **SIEM & Sentinel Automations**  
+  Logs, traces, and events from UIB, Denodo, Sentiyo, Databricks, and infrastructure are streamed into **Microsoft Sentinel**, RWJF’s native cloud SIEM.  
+  Sentinel correlates signals to detect threats, such as:
+    - Unusual access patterns  
+    - Excessive RAG queries hitting PII  
+    - Query injection attempts into Denodo views  
+  Automated playbooks respond by notifying SOC teams, disabling sessions, or opening service tickets in RWJF’s ITSM tool.
+
+- **DevSecOps Integration**  
+  CI/CD pipelines include policy-as-code, container image scanning, and endpoint hardening checks. Code failing security tests cannot progress to staging or production.
+
+- **SRE Observability**  
+  All components emit structured logs, metrics, and health checks. Alerts are routed to Azure Monitor and Grafana dashboards. Quarterly chaos drills validate that the system fails closed and recovers gracefully.
+
+- **Compliance Archiving**  
+  Immutable audit logs are retained for a minimum of 7 years, meeting IRS reporting and GDPR obligations for donor and stakeholder data.
 
 **Figure 7.1 – Security & Compliance Layers**  
 ![Security Layers](Images/SecurityGovernance.png)
