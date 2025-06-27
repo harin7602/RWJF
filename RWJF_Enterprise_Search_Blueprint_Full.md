@@ -49,18 +49,82 @@ The architecture is deliberately layered. Users interact solely with Sentiyo’s
 
 ---
 
-## 5. End-to-End User Journey – Experience in Motion
+## 5. User Journey Flow
 
-1. Authenticate – Single Sign-On via Azure AD  
-2. Ask – Sentiyo captures natural-language queries  
-3. Interpret – AI expands the query, generating filter hints  
-4. Govern – Denodo and UIB enforce role-based policies and PII masking  
-5. Retrieve – Structured rows and redacted snippets stream back  
-6. Compose – Sentiyo returns an answer with citations  
-7. Act – Users drill into Power BI dashboards or share insights in Teams  
+The user journey begins with a natural language query — for example, “Show me all grants awarded to education programs in New Jersey in the last 5 years.” This query, whether entered via the Sentiyo interface or federated via intranet/SharePoint, is authenticated through Azure AD and routed to the intelligent orchestration layer.
 
-**Figure 5.1 – User Journey Diagram**  
-![User Journey](Images/user-journey.png)
+### Step-by-Step Flow:
+1. **Authentication** – The user signs in using corporate SSO (Azure AD) with policy-enforced multifactor authentication.
+2. **Intent Interpretation** – Sentiyo's agentic AI interprets the query and determines the semantic domain (structured or unstructured).
+3. **Access Authorization** – Role-based access control, data masking, and policy checks are applied based on user context.
+4. **Data Retrieval** – Depending on the source type:
+   - Structured queries are routed through Denodo for virtualized, policy-enforced access.
+   - Unstructured queries route through UIB for snippet-level extraction from SharePoint, AEM, Drupal, or rwjf.org.
+5. **Answer Synthesis** – Sentiyo generates an explainable answer using Retrieval-Augmented Generation (RAG), combining structured values with referenced source snippets.
+6. **Result Delivery** – The response is returned through Sentiyo’s interface with citations, or redirected to Power BI for data exploration.
+
+The following subsections expand on the intelligent orchestration and architectural decomposition behind this flow.
+
+---
+
+## 5.1 Agentic AI Execution Model – Modular Intelligence in Action
+
+At the heart of the Sentiyo search layer is a modular **Agentic AI Execution Model**. Instead of monolithic AI models, the platform delegates responsibilities across autonomous, cooperating agents. This provides auditability, explainability, and the ability to evolve components independently.
+
+### Key Agents and Responsibilities:
+
+- **Intent Agent**  
+  Parses the natural language query, identifies semantic scope, entities, and query type (e.g., fact lookup vs. document retrieval). It formulates an intermediate search plan.
+
+- **Access Agent**  
+  Consults the user’s JWT token, associated RBAC policies, and organizational masking rules. It validates permissions before triggering any downstream execution.
+
+- **Retrieval Agent**  
+  Orchestrates data access:
+  - For structured data: issues SQL or Denodo view calls.
+  - For unstructured: issues secure requests via UIB to repositories like SharePoint, AEM, or public websites.
+
+- **Response Agent**  
+  Synthesizes a complete, human-readable response using vector embeddings and Retrieval-Augmented Generation (RAG), referencing both structured values and content snippets.
+
+### Agentic Benefits:
+- **Separation of concerns**: Each agent is self-contained and focused on one task.
+- **Observability**: Logs and metrics are granular, improving traceability and debugging.
+- **Upgradability**: Each agent can evolve independently (e.g., plugging in GPT-5.5 instead of GPT-4-turbo).
+- **Compliance**: Easier enforcement of data governance rules via the Access Agent.
+
+**Figure 5.1 – Agentic AI Search Flow**  
+![Agentic AI Flow](Agentic_AI_Flow.png)
+
+---
+
+## 5.2 Functional Layers – Responsibilities Over Vendors
+
+This architecture separates concerns cleanly across logical layers, ensuring each function is modular, testable, and replaceable. Below is a vendor-agnostic breakdown of the system’s responsibilities:
+
+- **Input Layer**  
+  Captures user query (natural language) via Sentiyo’s UI. No preprocessing or assumptions occur here.
+
+- **Intent Understanding Layer**  
+  Interprets query intent, determines if it targets structured or unstructured data, and formulates a retrieval plan. Performed by the Sentiyo AI Engine’s "Intent Agent".
+
+- **Policy & Access Control Layer**  
+  Evaluates user’s JWT context, access rights, and PII masking requirements before allowing any query execution. Enforced jointly by Denodo (structured) and UIB (unstructured).
+
+- **Retrieval Layer – Structured**  
+  Executes virtual SQL queries via Denodo Views, providing governed access to live transactional data without migration.
+
+- **Retrieval Layer – Unstructured**  
+  Requests masked snippets from SharePoint, AEM, Drupal and other repositories through UIB’s secure API gateway.
+
+- **Answer Composition Layer**  
+  Combines retrieved data using Retrieval-Augmented Generation (RAG), with vector support via Databricks, to produce grounded, explainable responses.
+
+- **Presentation Layer**  
+  Sentiyo returns the final response to the user, with inline citations, and optionally enables hand-off to Power BI for deep analytics.
+
+**Figure 5.2 – Functional Layers (Vendor-Agnostic)**  
+![Functional Layers](Functional_Architecture.png)
 
 ---
 
