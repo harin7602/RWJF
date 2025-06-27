@@ -84,7 +84,7 @@ The architecture is deliberately layered. Users interact solely with Sentiyo’s
 5. Validate – Pilot queries confirm relevance and redaction before go-live  
 
 **Figure 7.1 – Onboarding Flow**  
-![Onboarding](Onboarding_Architecture.png)
+![Onboarding](Images/On-Boarding_Pipeline.png)
 
 ---
 
