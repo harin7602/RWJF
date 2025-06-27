@@ -45,7 +45,7 @@ In discussions with RWJF leadership, two design paths — Salesforce‑centric a
 The architecture is deliberately layered. Users interact solely with Sentiyo’s conversational interface. Sentiyo interprets intent, retrieves governed structured data via Denodo and secure document snippets via UIB, then composes answers backed by Databricks vector search. This separation maximises agility and simplifies policy enforcement.
 
 **Figure 4.1 – Technology Architecture**  
-![Technology Architecture](Images/Technology Architecture – RWJF Enterprise Search - visual selection.png)
+![Technology Architecture](Images/Technology_Architecture.png)
 
 ---
 
