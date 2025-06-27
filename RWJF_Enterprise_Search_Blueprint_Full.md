@@ -26,7 +26,7 @@ In discussions with RWJF leadership, two design paths — Salesforce‑centric a
 RWJF's current enterprise search solution is built on Raytion connectors integrated with Oracle databases, Adobe Experience Manager (AEM), Microsoft SharePoint, and internal content repositories such as rwjf.org. This system has been in place for several years and has served as the core enterprise knowledge access mechanism for internal staff.
 
 **Figure 2.1 – Technology Architecture**  
-![Existing Architecture](Images/Technology_Architecture.png)
+![Existing Architecture](Images/existing_architecture.png)
 
 ### 2.1 Technologies in Use
 - **Oracle PIMS DB** – Primary structured data source for grants and program data.
