@@ -1,8 +1,8 @@
 
 # AI-Driven Enterprise Search Blueprint – Robert Wood Johnson Foundation
 
-**Version 1.4 – Narrative Edition**  
-**Date:** 27 June 2025  
+**Version 1.6 – CAG Enhancements, OSS RAG Readiness, and UX Rationalisation** 
+**Date:** 28 June 2025  
 **Author:** Harindha Fernando – Enterprise Architect, NCINGA
 
 ---
@@ -98,7 +98,7 @@ The following subsections expand on the intelligent orchestration and architectu
 
 ## Agentic AI Execution Model – Modular Intelligence in Action
 
-At the heart of the Sentiyo search layer is a modular **Agentic AI Execution Model**. Instead of monolithic AI models, the platform delegates responsibilities across autonomous, cooperating agents. This provides auditability, explainability, and the ability to evolve components independently.
+At the heart of the Sentiyo search layer is a modular **Agentic AI Execution Model**. Instead of monolithic AI models, the platform delegates responsibilities across autonomous, cooperating agents. This provides auditability, explainability, and the ability to evolve components independently. Sentiyo’s architecture has evolved to support both Context-Aware Generation (CAG) and Cache-Augmented Generation. This enables real-time personalization with memory of prior queries, while reducing latency and cost through intelligent caching of responses.
 
 ### Key Agents and Responsibilities:
 
@@ -111,10 +111,19 @@ At the heart of the Sentiyo search layer is a modular **Agentic AI Execution Mod
 - **Retrieval Agent**  
   Orchestrates data access:
   - For structured data: issues SQL or Denodo view calls.
-  - For unstructured: issues secure requests via UIB to repositories like SharePoint, AEM, or public websites.
+  - For unstructured: issues secure requests via UIB to repositories like SharePoint, AEM, or public websites. Now includes full-text indexing (via Azure AI Search or Elasticsearch) for rich relevance-based retrieval.
 
 - **Response Agent**  
   Synthesizes a complete, human-readable response using vector embeddings and Retrieval-Augmented Generation (RAG), referencing both structured values and content snippets.
+
+- **Context-Aware Agent (CAG)**  
+  Maintains session-level context and multi-turn memory, allowing refined follow-up queries and personalized search behavior.
+
+- **Cache Layer (CAG2)**  
+  Identifies and retrieves previous responses for repeated or semantically similar queries to avoid redundant LLM calls.
+
+This hybrid CAG model enhances response speed, cost-efficiency, and user relevance.
+
 
 ### Agentic Benefits:
 - **Separation of concerns**: Each agent is self-contained and focused on one task.
@@ -122,8 +131,8 @@ At the heart of the Sentiyo search layer is a modular **Agentic AI Execution Mod
 - **Upgradability**: Each agent can evolve independently (e.g., plugging in GPT-5.5 instead of GPT-4-turbo).
 - **Compliance**: Easier enforcement of data governance rules via the Access Agent.
 
-**Figure 6.1 – Agentic AI Search Flow**  
-![Agentic AI Flow](Images/Agentic_AI_Flow.png)
+**Figure 6.1 – Agentic AI Execution Model with Dual CAG**  
+![Agentic AI Flow](Images/AI_AgenticFlow_v2.png)
 
 ---
 
@@ -144,7 +153,7 @@ This architecture separates concerns cleanly across logical layers, ensuring eac
   Executes virtual SQL queries via Denodo Views, providing governed access to live transactional data without migration.
 
 - **Retrieval Layer – Unstructured**  
-  Requests masked snippets from SharePoint, AEM, Drupal and other repositories through UIB’s secure API gateway.
+  Leverages full-text indexing via Azure AI Search or open-source alternatives (e.g., Elasticsearch, Apache Solr) to support deep document retrieval. Snippets are extracted securely via UIB once documents are located.
 
 - **Answer Composition Layer**  
   Combines retrieved data using Retrieval-Augmented Generation (RAG), with vector support via Databricks, to produce grounded, explainable responses.
@@ -183,6 +192,8 @@ Security in this solution is embedded from design through operations. Rather tha
 
 - **Compliance Archiving**  
   Immutable audit logs are retained for a minimum of 7 years, meeting IRS reporting and GDPR obligations for donor and stakeholder data. 
+
+
 
 **Figure 7.1 – Security & Compliance Layers**  
 ![Security Layers](Images/SecurityGovernance.png)
@@ -225,10 +236,24 @@ The true value of the transformation lies not only in cost savings but in enabli
 
 ## Road-map & Phased Delivery – Risk-Managed Transformation
 
-- Phase 0 – Mobilise (2 weeks): charter, RACI, landing zone  
-- Phase 1 – Foundation (6 weeks): Denodo platform, UIB hardening, SSO integration  
-- Phase 2 – Pilot (8 weeks): Salesforce + SharePoint search for pilot users  
-- Phase 3 – Expansion (12 weeks): onboard AEM, Drupal, Workday; retire Oracle PIMS  
-- Phase 4 – Optimise (ongoing): ML-driven relevance tuning and dashboard rollout  
+- **Phase 0 – Mobilise (2 weeks):**  
+  Finalize project charter, RACI structure, cloud landing zone, and compliance onboarding.
+
+- **Phase 1 – Foundation (6 weeks):**  
+  Deploy Denodo for structured virtualization, harden UIB API Gateway, integrate Azure AD SSO, and set up initial DevSecOps pipelines.
+
+- **Phase 2 – Pilot (8 weeks):**  
+  - Connect **Salesforce Data Cloud** and **Nonprofit Cloud** to Denodo and AI pipeline.  
+  - Enable **SharePoint** and full-text index integration (using Azure AI Search or OSS).  
+  - Activate Sentiyo with **CAG + RAG support** for unified structured and unstructured search.  
+
+- **Phase 3 – Expansion (12 weeks):**  
+  - Onboard **Adobe AEM, Drupal, Workday**, and **rwjf.org** via UIB.  
+  - Retire legacy Oracle PIMS system post-successful data migration to Salesforce.  
+
+- **Phase 4 – Optimise (Ongoing):**  
+  - Continuous fine-tuning of RAG relevance using user feedback.  
+  - Enhance dashboards and analytics via Power BI and Databricks.  
+  - Enable additional use cases (e.g., Grants Assistant, Contracts Summarizer) on Sentiyo.
 
 ---
