@@ -1,7 +1,7 @@
 
 # AI-Driven Enterprise Search Blueprint – Robert Wood Johnson Foundation
 
-**Version 1.6 – CAG Enhancements, OSS RAG Readiness, and UX Rationalisation** 
+**Version 1.6 – CAG Enhancements, OSS RAG Readiness, and UX Rationalisation**
 **Date:** 28 June 2025  
 **Author:** Harindha Fernando – Enterprise Architect, NCINGA
 
