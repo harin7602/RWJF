@@ -1,0 +1,64 @@
+\documentclass[11pt,a4paper]{article} % Or report
+
+\usepackage[margin=1in]{geometry} % Good standard margins
+\usepackage{fontspec} % For system fonts
+\usepackage{xcolor} % For colors
+\usepackage{hyperref} % For clickable links
+\usepackage{graphicx} % For images
+\usepackage{enumitem} % For list control
+\usepackage{titlesec} % For custom heading styles
+\usepackage{ragged2e} % For justified text if desired
+\usepackage{fancyhdr} % For headers/footers
+
+% Set fonts (ensure these fonts are installed on your Mac)
+\setmainfont{Arial}[
+  Path = /System/Library/Fonts/, % Common path for system fonts on macOS
+  Extension = .ttf,
+  UprightFont = *,
+  BoldFont = *-Bold,
+  ItalicFont = *-Italic,
+  BoldItalicFont = *-BoldItalic
+]
+\setsansfont{Arial}[
+  Path = /System/Library/Fonts/,
+  Extension = .ttf,
+  UprightFont = *,
+  BoldFont = *-Bold,
+  ItalicFont = *-Italic,
+  BoldItalicFont = *-BoldItalic
+]
+\setmonofont{Consolas}[
+  Path = /System/Library/Fonts/,
+  Extension = .ttf,
+  UprightFont = *,
+  BoldFont = *-Bold,
+  ItalicFont = *-Italic,
+  BoldItalicFont = *-BoldItalic
+]
+
+% Adjust paragraph spacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8em} % A little space between paragraphs
+
+% Customize section headings (example: sans-serif, bold, slightly larger)
+\titleformat{\section}{\Large\sffamily\bfseries}{}{0em}{}
+\titleformat{\subsection}{\large\sffamily\bfseries}{}{0em}{}
+\titleformat{\subsubsection}{\sffamily\bfseries}{}{0em}{}
+
+% Ensure images fit the page
+\setkeys{Gin}{width=\linewidth, keepaspectratio}
+
+% Hyperlink colors (optional, remove if you want default black links)
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,    % color of internal links
+    citecolor=green,   % color of links to bibliography
+    filecolor=magenta, % color of file links
+    urlcolor=cyan      % color of external links
+}
+
+\begin{document}
+
+$body$
+
+\end{document}

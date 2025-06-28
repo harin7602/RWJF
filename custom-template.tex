@@ -1,0 +1,56 @@
+\documentclass[11pt]{article}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@makefigure}
+  {\@fs@pre\center\@fs@post}
+  {\@fs@pre\centering\@fs@post}
+  {}{}
+\makeatother
+\setkeys{Gin}{width=\linewidth}
+
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{titlesec}
+\usepackage{fontspec}
+\usepackage{setspace}
+
+
+
+
+\geometry{margin=1in}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textbf{AI-Driven Enterprise Search Blueprint}}
+\rhead{\thepage}
+\rfoot{\textit{Confidential – NCINGA PTE LTD}}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+
+\title{\Huge \textbf{AI-Driven Enterprise Search Blueprint}\\
+\large Robert Wood Johnson Foundation}
+\author{}
+\date{\today}
+
+
+\usepackage{fontspec}
+\setmainfont{Poppins}
+\providecommand{\tightlist}{}  % ← Add this line
+%\DeclareUnicodeCharacter{2011}{-}   % maps NB-hyphen to a normal hyphen
+%\usepackage{newunicodechar}
+%\newunicodechar{-}{-}     % first “-” is U+2011 (copy-paste), second is ordinary hyphen
+\catcode`\^^^^2011=\active      % make U+2011 an active character
+\def^^^^2011{-}                 % expand to an ordinary hyphen
+\begin{document}
+\maketitle
+\newpage
+
+$body$
+
+\end{document}
+
